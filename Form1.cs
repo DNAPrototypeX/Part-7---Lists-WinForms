@@ -10,12 +10,14 @@ using System.Windows.Forms;
 
 namespace Part_7___Lists_WinForms
 {
-    public partial class Form1 : Form
+    public partial class frmMain : Form
     {
         List<int> numbers = new List<int>();
         List<string> heroes = new List<string>();
         Random rng = new Random();
-        public Form1()
+        int heroesFound = 0;
+        bool heroIsInList = false;
+        public frmMain()
         {
             InitializeComponent();
         }
@@ -103,24 +105,57 @@ namespace Part_7___Lists_WinForms
 
         private void btnRemoveHero_Click(object sender, EventArgs e)
         {
-            if (heroes.Contains(txtRemoveHero.Text.Trim(), StringComparer.OrdinalIgnoreCase))
+            if (heroes.RemoveAll(hero => hero.Trim().ToLower() == txtRemoveHero.Text.Trim().ToLower()) > 0)
             {
-                heroes.RemoveAll(n => Equals(txtRemoveHero.Text.Trim(), StringComparer.OrdinalIgnoreCase));
-                lblStatus.Text = $"Status: {txtRemoveHero.Text.Trim()} was removed removed from the list.";
+                lblStatus.Text = $"Status: {txtRemoveHero.Text.Trim().ToLower()} was removed from the list.";
             }
             else
             {
-                lblStatus.Text = "Status: Hero does is not on the list.";
+                lblStatus.Text = "Status: Hero is not on the list.";
             }
+            //if (heroes.Count() == 0)
+            //{
+            //    lblStatus.Text = "Status: Add more heroes before removing them.";
+            //}
+            //for (int i = 0; i <= heroes.Count() - 1; i++)
+            //{
+            //    if (txtRemoveHero.Text.Trim().ToLower() == heroes.ElementAt(i).Trim().ToLower())
+            //    {
+            //        heroesFound += 1;
+            //        lblStatus.Text = $"Status: {heroes.ElementAt(i).Trim().ToLower()} was removed from the list.";
+            //        heroes.RemoveAt(i);
+            //    }
+            //    else
+            //    {
+            //        if (heroesFound == 0)
+            //        {
+            //            lblStatus.Text = "Status: Hero is not on the list.";
+            //        }
+            //    }
+            //}
             txtRemoveHero.Text = "";
             lstHeroes.DataSource = null;
             lstHeroes.DataSource = heroes;
+            heroesFound = 0;
         }
 
         private void btnAddHero_Click(object sender, EventArgs e)
         {
-            heroes.Add(txtAddHero.Text.Trim());
-            lblStatus.Text = $"Status: {txtAddHero.Text.Trim()} was added to the list.";
+            
+            for (int i = 0; i <= heroes.Count() - 1; i++)
+            {
+                if (txtAddHero.Text.Trim().ToLower() == heroes.ElementAt(i).Trim().ToLower())
+                {
+                    heroIsInList = true;
+                    lblStatus.Text = "Status: Hero is already in the list.";
+                }
+            }
+            if (heroIsInList == false)
+            {
+                heroes.Add(txtAddHero.Text.Trim());
+                lblStatus.Text = $"Status: {txtAddHero.Text.Trim().ToLower()} was added to the list.";
+            }
+            heroIsInList = false;
             txtAddHero.Text = "";
             lstHeroes.DataSource = null;
             lstHeroes.DataSource = heroes;
