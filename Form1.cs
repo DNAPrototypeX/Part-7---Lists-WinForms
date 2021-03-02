@@ -105,7 +105,8 @@ namespace Part_7___Lists_WinForms
 
         private void btnRemoveHero_Click(object sender, EventArgs e)
         {
-            if (heroes.RemoveAll(hero => hero.Trim().ToLower() == txtRemoveHero.Text.Trim().ToLower()) > 0)
+            //if (heroes.RemoveAll(hero => hero.Trim().ToLower() == txtRemoveHero.Text.Trim().ToLower()) > 0)
+            if (heroes.RemoveAll(hero => hero.Equals(txtRemoveHero.Text.Trim(), StringComparison.OrdinalIgnoreCase)) > 0)
             {
                 lblStatus.Text = $"Status: {txtRemoveHero.Text.Trim().ToLower()} was removed from the list.";
             }
